@@ -1,35 +1,31 @@
 import React, { useState } from 'react';
 
-const TweetForm = ({ onSubmit }) => {
-  const [username, setUsername] = useState('');
-  const [content, setContent] = useState('');
+const Tweet = ({ username, content }) => {
+  const [likes, setLikes] = useState(0);
+  const [isRetweeted, setIsRetweeted] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (username.trim() === '' || content.trim() === '') {
-      return;
-    }
-    onSubmit(username, content);
-    setUsername('');
-    setContent('');
+  const handleLike = () => {
+    setLikes((prevLikes) => prevLikes + 1);
+  };
+
+  const handleRetweet = () => {
+    setIsRetweeted(true);
   };
 
   return (
-    <form className="tweet-form" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <textarea
-        placeholder="Your tweet..."
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      ></textarea>
-      <button type="submit">Tweet</button>
-    </form>
+    <div className="tweet">
+      <h4>{username}</h4>
+      <p>{content}</p>
+      <div className="actions">
+        <button onClick={handleLike}>
+          Like {likes > 0 && <span>({likes})</span>}
+        </button>
+        <button onClick={handleRetweet} disabled={isRetweeted}>
+          {isRetweeted ? 'Retweeted' : 'Retweet'}
+        </button>
+      </div>
+    </div>
   );
 };
 
-export default TweetForm;
+export default Tweet;
